@@ -9,3 +9,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  content   Json
+  type      String
+  message   Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  content   String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
